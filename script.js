@@ -61,6 +61,25 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const displayMovements = function (movements) {
+  containerMovements.innerHTML = '';
+
+  movements.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    const html = ` 
+    <div class="movements__row">
+    <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type} </div>
+    <div class="movements__value">${mov}</div>
+  </div>`;
+
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+};
+displayMovements(account1.movements);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -71,11 +90,11 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
-let arr = ['a', 'b', 'c', 'd', 'e'];
+/* let arr = ['a', 'b', 'c', 'd', 'e'];
 
 // SLICE
 console.log(arr.slice(2));
@@ -100,3 +119,37 @@ console.log(arr2);
 // CONCAT
 const letters = arr.concat(arr2);
 console.log(letters);
+console.log([...arr, ...arr2]);
+
+// JOIN
+console.log(letters.join(' - '));
+
+// AT method
+const arr3 = [23, 11, 64];
+console.log(arr3[0]);
+console.log(arr3.at(0));
+
+console.log(arr3[arr3.length - 1]);
+console.log(arr3.slice(-1)[0]);
+console.log(arr3.at(-2)); */
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// movements.forEach(element => console.log(element));
+
+// solving it through 'for loop'
+for (const movement of movements) {
+  if (movement > 0) {
+    console.log(`you deposited ${movement}`);
+  } else {
+    console.log(`you withdrew ${Math.abs(movement)}`);
+  }
+}
+
+console.log(`----------FOR EACH -----------`);
+movements.forEach(function (movement) {
+  if (movement > 0) {
+    console.log(`you deposited ${movement}`);
+  } else {
+    console.log(`you withdrew ${Math.abs(movement)}`);
+  }
+});
