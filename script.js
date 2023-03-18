@@ -72,13 +72,44 @@ const displayMovements = function (movements) {
     <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type} </div>
-    <div class="movements__value">${mov}</div>
+    <div class="movements__value">${mov}€</div>
   </div>`;
 
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
 displayMovements(account1.movements);
+
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}
+€`;
+
+  const outgoing = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(outgoing)}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter((int, i, arr) => {
+      return int >= 1;
+    })
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+
+calcDisplaySummary(account1.movements);
+
+const calcDisplayPrintBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance}€`;
+};
+calcDisplayPrintBalance(account1.movements);
+
 const createUsernames = function (accs) {
   accs.forEach(function (acc) {
     acc.username = acc.owner
@@ -176,3 +207,24 @@ const eurToUsd = 1.1;
 
 const movementsUSD = movements.map(mov => mov * eurToUsd);
 console.log(movementsUSD);
+
+const deposits = movements.filter(function (mov) {
+  return mov > 0;
+});
+console.log(deposits);
+
+const withdrawals = movements.filter(mov => mov < 0); // less than zero
+console.log(withdrawals);
+
+// accumulator -> SNOWBALL
+const balance = movements.reduce(function (acc, cur, i, arr) {
+  return acc + cur;
+}, 0);
+console.log(balance);
+
+const eurToUsd1 = 1.1;
+const totalDepositedUSD = movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * eurToUsd1)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(totalDepositedUSD);
